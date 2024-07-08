@@ -3,47 +3,29 @@ import { z } from "zod";
 import { Octokit } from "octokit";
 import { Octokit as Rest } from "@octokit/rest";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "@/server/api/trpc";
-
-const octokit = new Octokit({
-  auth: "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",
-});
-const octokitRest = new Rest({
-  auth: "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",
-});
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
 export const githubRouter = createTRPCRouter({
   getRepository: protectedProcedure
     .input(z.object({ owner: z.string().min(1), repo: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
+      const octokit = new Octokit({
+        auth: ctx.session?.accessToken,
+      });
+      const octokitRest = new Rest({
+        auth: ctx.session?.accessToken,
+      });
+
       const repoResponse = await octokitRest.repos.get({
         owner: input.owner,
         repo: input.repo,
       });
-
-      // .request("GET /repos/{owner}/{repo}", {
-      //   owner: input.owner,
-      //   repo: input.repo,
-      // });
 
       const defaultBranch = await octokitRest.repos.getBranch({
         owner: input.owner,
         repo: input.repo,
         branch: repoResponse.data.default_branch,
       });
-
-      // .request(
-      //   "GET /repos/{owner}/{repo}/branches/{branch}",
-      //   {
-      //     owner: input.owner,
-      //     repo: input.repo,
-      //     branch: repoResponse.data.default_branch,
-      //   },
-      // );
 
       const treeSha = defaultBranch.data.commit.commit.tree.sha;
 
@@ -71,6 +53,10 @@ export const githubRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const octokitRest = new Rest({
+        auth: ctx.session?.accessToken,
+      });
+
       const encodedContent = await octokitRest.repos.getContent({
         owner: input.owner,
         repo: input.repo,
@@ -86,10 +72,19 @@ export const githubRouter = createTRPCRouter({
       }
     }),
 
-  getUserRepositories: publicProcedure
+  getUserRepositories: protectedProcedure
     .input(z.object({ username: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
-      const userRepos = await octokit.request("GET /user/repos");
+      const octokit = new Octokit({
+        auth: ctx.session?.accessToken,
+      });
+
+      const userRepos = await octokit.request("GET /user/repos", {
+        type: "all",
+        headers: {
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      });
 
       return userRepos;
     }),

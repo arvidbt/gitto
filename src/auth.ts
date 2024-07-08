@@ -10,6 +10,7 @@ import {
   verificationTokens,
 } from "./server/db/schema";
 import { env } from "./env";
+import { cache } from "react";
 
 export const authConfig = {
   adapter: DrizzleAdapter(db, {
@@ -18,26 +19,37 @@ export const authConfig = {
     sessionsTable: sessions,
     verificationTokensTable: verificationTokens,
   }),
+  session: { strategy: "jwt" },
   providers: [
     GitHub({
       clientId: env.AUTH_GITHUB_ID,
       clientSecret: env.AUTH_GITHUB_SECRET,
+      authorization: {
+        params: {
+          scope: "repo read:user, user:email",
+        },
+      },
     }),
   ],
   secret: env.JWT_SECRET,
   callbacks: {
-    jwt({ token, session, account }) {
+    async jwt({ token, account }) {
       if (account) {
-        token.accessToken = account?.accessToken;
+        token.accessToken = account.access_token;
       }
       return token;
     },
     async session({ session, user, token }) {
-      session.user.id = user.id;
+      if (token?.accessToken) {
+        session.accessToken = token.accessToken as string;
+      }
 
       return session;
     },
   },
 } satisfies NextAuthConfig;
 
-export const { handlers, auth, signOut, signIn } = NextAuth(authConfig);
+const { handlers, auth: uncachedAuth, signOut, signIn } = NextAuth(authConfig);
+
+export { signIn, signOut, handlers };
+export const auth = cache(uncachedAuth);

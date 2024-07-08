@@ -11,6 +11,8 @@ export function SignOut() {
         await signOut({ redirect: false });
         const session = await auth();
 
+        if (!session?.user) redirect("/");
+
         return redirect(session?.user.name ?? "/");
       }}
     >
