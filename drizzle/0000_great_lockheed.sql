@@ -26,6 +26,26 @@ CREATE TABLE IF NOT EXISTS "authenticator" (
 	CONSTRAINT "authenticator_credentialID_unique" UNIQUE("credentialID")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "files" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"sha" text NOT NULL,
+	"name" text NOT NULL,
+	"type" text NOT NULL,
+	"encodedContent" text,
+	"repoId" text NOT NULL,
+	CONSTRAINT "files_sha_unique" UNIQUE("sha")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "repository" (
+	"id" text PRIMARY KEY NOT NULL,
+	"repositoryName" text NOT NULL,
+	"repositoryFullName" text NOT NULL,
+	"repositoryOwner" text NOT NULL,
+	"created" timestamp DEFAULT now(),
+	"userId" text NOT NULL,
+	CONSTRAINT "repository_repositoryFullName_unique" UNIQUE("repositoryFullName")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
 	"sessionToken" text PRIMARY KEY NOT NULL,
 	"userId" text NOT NULL,
@@ -55,6 +75,18 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "authenticator" ADD CONSTRAINT "authenticator_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "files" ADD CONSTRAINT "files_repoId_repository_id_fk" FOREIGN KEY ("repoId") REFERENCES "public"."repository"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "repository" ADD CONSTRAINT "repository_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

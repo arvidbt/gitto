@@ -4,11 +4,9 @@ import { GeistSans } from "geist/font/sans";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { siteConfig } from "@/config/siteConfig";
-import Header from "@/components/header";
 import { cn } from "@/lib/utils";
 import { fontSans, fontBricolage } from "@/styles/fonts";
-import { Toaster } from "@/components/ui/toaster";
-
+import { Toaster } from "@/components/ui/sonner";
 export const metadata = { ...siteConfig };
 
 export default function RootLayout({
@@ -20,13 +18,13 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body
         className={cn(
-          "bg-github-primary text-github-white min-h-screen font-sans antialiased",
+          "min-h-screen bg-github-primary font-sans text-github-white antialiased",
           fontSans.variable,
           fontBricolage.variable,
         )}
       >
         <TRPCReactProvider>
-          <Header />
+          {/* <Header /> */}
           {children}
           <Toaster />
         </TRPCReactProvider>

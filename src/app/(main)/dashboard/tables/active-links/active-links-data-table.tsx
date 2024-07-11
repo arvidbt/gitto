@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   useReactTable,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
 } from "@tanstack/react-table";
 import * as React from "react";
 
@@ -26,7 +26,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function ActiveLinksDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -38,16 +38,21 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 3,
+      },
+    },
     state: {
       sorting,
     },
   });
 
   return (
-    <div>
+    <div className="">
       <div className="rounded-md ">
         <Table>
-          <TableHeader>
+          <TableHeader className="hidden">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -70,7 +75,7 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && ""}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="py-2.5">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
@@ -85,7 +90,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No Active Links.
                 </TableCell>
               </TableRow>
             )}

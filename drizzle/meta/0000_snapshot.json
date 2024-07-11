@@ -1,5 +1,5 @@
 {
-  "id": "e107872d-b0ea-4435-b18a-d7539b9425e2",
+  "id": "2ae2348f-3331-4a7b-90e6-ec21fbf83580",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "6",
   "dialect": "postgresql",
@@ -186,6 +186,143 @@
           "nullsNotDistinct": false,
           "columns": [
             "credentialID"
+          ]
+        }
+      }
+    },
+    "public.files": {
+      "name": "files",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "sha": {
+          "name": "sha",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "encodedContent": {
+          "name": "encodedContent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "repoId": {
+          "name": "repoId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "files_repoId_repository_id_fk": {
+          "name": "files_repoId_repository_id_fk",
+          "tableFrom": "files",
+          "tableTo": "repository",
+          "columnsFrom": [
+            "repoId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "files_sha_unique": {
+          "name": "files_sha_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sha"
+          ]
+        }
+      }
+    },
+    "public.repository": {
+      "name": "repository",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "repositoryName": {
+          "name": "repositoryName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "repositoryFullName": {
+          "name": "repositoryFullName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "repositoryOwner": {
+          "name": "repositoryOwner",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created": {
+          "name": "created",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "repository_userId_user_id_fk": {
+          "name": "repository_userId_user_id_fk",
+          "tableFrom": "repository",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "repository_repositoryFullName_unique": {
+          "name": "repository_repositoryFullName_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "repositoryFullName"
           ]
         }
       }

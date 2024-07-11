@@ -21,6 +21,8 @@ function generateId(name: string, parentId: string | null): string {
 
 export async function buildTree(
   items: GithubNode[],
+  owner: string,
+  repo: string,
 ): Promise<TreeDataItem[] | undefined> {
   const root: TreeDataItem = {
     id: "root",
@@ -52,8 +54,8 @@ export async function buildTree(
 
         if (node.type !== "tree") {
           node.encodedContent = await api.github.getEncodedFileContent({
-            owner: "arvidbt",
-            repo: "moodee-app",
+            owner: owner,
+            repo: repo,
             path: item.path,
           });
         }

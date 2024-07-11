@@ -4,6 +4,12 @@ import { Octokit } from "octokit";
 import { Octokit as Rest } from "@octokit/rest";
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { type Endpoints } from "@octokit/types";
+
+export type Repository =
+  Endpoints["GET /repos/{owner}/{repo}/git/trees/{tree_sha}"]["response"];
+
+export type UserRepositories = Endpoints["GET /user/repos"]["response"];
 
 export const githubRouter = createTRPCRouter({
   getRepository: protectedProcedure
@@ -15,6 +21,8 @@ export const githubRouter = createTRPCRouter({
       const octokitRest = new Rest({
         auth: ctx.session?.accessToken,
       });
+
+      console.log(input);
 
       const repoResponse = await octokitRest.repos.get({
         owner: input.owner,
@@ -41,7 +49,7 @@ export const githubRouter = createTRPCRouter({
         },
       );
 
-      return tree;
+      return tree as Repository;
     }),
 
   getEncodedFileContent: protectedProcedure
@@ -63,10 +71,6 @@ export const githubRouter = createTRPCRouter({
         path: input.path,
       });
 
-      if (Array.isArray(encodedContent.data)) {
-        throw new Error("The content is a directory, not a file");
-      }
-
       if ("content" in encodedContent.data) {
         return encodedContent.data.content;
       }
@@ -80,7 +84,7 @@ export const githubRouter = createTRPCRouter({
       });
 
       const userRepos = await octokit.request("GET /user/repos", {
-        type: "all",
+        type: "owner",
         headers: {
           "X-GitHub-Api-Version": "2022-11-28",
         },
@@ -88,4 +92,18 @@ export const githubRouter = createTRPCRouter({
 
       return userRepos;
     }),
+
+  getUserRateLimit: protectedProcedure.mutation(async ({ ctx }) => {
+    const octokit = new Octokit({
+      auth: ctx.session?.accessToken,
+    });
+
+    const rateLimit = await octokit.request("GET /rate_limit", {
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    });
+
+    return rateLimit;
+  }),
 });

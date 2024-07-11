@@ -30,7 +30,7 @@
 //           itemIcon={Workflow}
 //         />
 //       </div>
-//       {content && <CodeBlock code={content} language="typescript"></CodeBlock>}
+//       {content && <CodeBlock code={content} language="javascript"></CodeBlock>}
 //     </div>
 //   );
 // }

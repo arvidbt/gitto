@@ -5,10 +5,12 @@ import {
   text,
   primaryKey,
   integer,
+  serial,
 } from "drizzle-orm/pg-core";
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 import type { AdapterAccountType } from "next-auth/adapters";
+import { createSelectSchema } from "drizzle-zod";
 
 const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle";
 const pool = postgres(connectionString, { max: 1 });
@@ -91,3 +93,29 @@ export const authenticators = pgTable(
     }),
   }),
 );
+
+export const repository = pgTable("repository", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  repositoryName: text("repositoryName").notNull(),
+  repositoryFullName: text("repositoryFullName").notNull().unique(),
+  repositoryOwner: text("repositoryOwner").notNull(),
+  created: timestamp("created").defaultNow(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+});
+
+export const repositorySelectSchema = createSelectSchema(repository);
+
+export const files = pgTable("files", {
+  id: serial("id").primaryKey(),
+  sha: text("sha").notNull().unique(),
+  name: text("name").notNull(),
+  type: text("type").notNull(),
+  encodedContent: text("encodedContent"),
+  repoId: text("repoId")
+    .notNull()
+    .references(() => repository.id, { onDelete: "cascade" }),
+});
