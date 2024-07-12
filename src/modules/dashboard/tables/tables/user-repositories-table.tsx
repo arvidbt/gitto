@@ -1,5 +1,3 @@
-import { SelectForm } from "@/app/(main)/dashboard/select-form";
-import { RepositoryDataTable } from "@/app/(main)/dashboard/tables/user-repositories/user-repository-data-table";
 import {
   Card,
   CardContent,
@@ -20,6 +18,8 @@ import { getUserRepositoryColumns } from "../columns/user-repository-columns";
 import { type repositorySelectSchema } from "@/server/db/schema";
 import { type UserRepositories } from "@/server/api/routers/github";
 import { type z } from "zod";
+import { UserRepositoryDataTable } from "../data-tables/user-repository-data-table";
+import { SelectForm } from "./create-link-select-form";
 
 interface UserRepositoriesProps {
   activeLinks: z.infer<typeof repositorySelectSchema>[];
@@ -104,7 +104,7 @@ export function UserRepositoriesTable({
       </CardHeader>
       <CardContent>
         {userRepos.data && (
-          <RepositoryDataTable
+          <UserRepositoryDataTable
             data={repos}
             columns={getUserRepositoryColumns}
           />
