@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { z } from "zod";
 import { type TreeDataItem } from "@/components/ui/tree";
-import { api } from "@/trpc/server";
+import { trpc } from "@/trpc/server";
 
 const GithubNodeSchema = z.object({
   path: z.string().min(1),
@@ -53,7 +53,7 @@ export async function buildTree(
         };
 
         if (node.type !== "tree") {
-          node.encodedContent = await api.github.getEncodedFileContent({
+          node.encodedContent = await trpc.github.getEncodedFileContent({
             owner: owner,
             repo: repo,
             path: item.path,

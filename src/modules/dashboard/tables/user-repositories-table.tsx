@@ -14,11 +14,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { FolderSymlink } from "lucide-react";
-import { getUserRepositoryColumns } from "../columns/user-repository-columns";
+import { getUserRepositoryColumns } from "./user-repository-columns";
 import { type repositorySelectSchema } from "@/server/db/schema";
 import { type UserRepositories } from "@/server/api/routers/github";
 import { type z } from "zod";
-import { UserRepositoryDataTable } from "../data-tables/user-repository-data-table";
+import { UserRepositoryDataTable } from "./user-repository-data-table";
 import { SelectForm } from "./create-link-select-form";
 
 interface UserRepositoriesProps {
@@ -62,7 +62,7 @@ export function UserRepositoriesTable({
     >
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
-          <CardTitle>Repositories</CardTitle>
+          <CardTitle>Github Repositories</CardTitle>
           <CardDescription>
             {" "}
             All your repositories, public and private.

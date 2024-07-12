@@ -5,9 +5,7 @@ import { getTimeSinceUpdated } from "@/utils/time-since-updated";
 import { ArrowRight } from "lucide-react";
 // import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
-import { type RepositoryItem } from "../columns/active-links-columns";
-// import { Button } from "@/components/ui/button";
-// import { api } from "@/trpc/react";
+import { type RepositoryItem } from "./active-links-columns";
 
 interface ActiveLinkCardProps {
   rowData: RepositoryItem;
@@ -17,12 +15,6 @@ export function ActiveLinkRow({ rowData }: ActiveLinkCardProps) {
   // const deleteMutation = useMutation({
   //   mutationFn: (id: string) => deleteLink(id),
   // });
-
-  //   const utils = api.useUtils();
-
-  //   const invalidateDatabaseQueries = () => {
-  //     utils.db.invalidate();
-  //   };
 
   return (
     <Card className="border-2 border-github-foreground bg-github-secondary py-0">

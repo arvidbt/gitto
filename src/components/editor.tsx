@@ -1,6 +1,6 @@
 "use server";
 
-import { api } from "@/trpc/server";
+import { trpc } from "@/trpc/server";
 import {
   Card,
   CardContent,
@@ -30,7 +30,7 @@ export default async function Editor({ owner, repo }: Props) {
     return null;
   }
 
-  const repositoryResponse = await api.github.getRepository({
+  const repositoryResponse = await trpc.github.getRepository({
     owner: owner,
     repo: repo,
   });
@@ -52,7 +52,7 @@ export default async function Editor({ owner, repo }: Props) {
 
   const updatedTree = await Promise.all(
     repositoryResponse.data.tree.map(async (file) => {
-      const encodedContent = await api.github.getEncodedFileContent({
+      const encodedContent = await trpc.github.getEncodedFileContent({
         path: file.path ?? "",
         owner: owner,
         repo: repo,

@@ -1,15 +1,14 @@
-import { api } from "@/trpc/server";
+import { trpc } from "@/trpc/server";
 import { auth } from "@/auth";
 import { Nav } from "@/components/nav";
 import { UserRepositoriesTable, ActiveLinksTable } from "@/modules/dashboard";
-import { doGetActiveLinks } from "@/server/actions/do-get-active-links";
 import { Suspense } from "react";
 
 export default async function Dashboard() {
   const session = await auth();
-  const repos = await api.github.getUserRepositories({ username: "arvidbt" });
+  const repos = await trpc.github.getUserRepositories({ username: "arvidbt" });
+  const activeLinks = await trpc.db.getActiveLinks();
 
-  const activeLinks = await doGetActiveLinks();
   if (!session) {
     return null;
   }

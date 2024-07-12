@@ -8,20 +8,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { KeyRound } from "lucide-react";
-import { getActiveLinksColumns } from "../columns/active-links-columns";
-import { ActiveLinksDataTable } from "..";
 import { type repositorySelectSchema } from "@/server/db/schema";
 import { type z } from "zod";
 import { Button } from "@/components/ui/button";
-import { api } from "@/trpc/react";
+import { getActiveLinksColumns } from "./active-links-columns";
+import { ActiveLinksDataTable } from "./active-links-data-tabel";
 
 interface ActiveLinksTableProps {
   activeLinks: z.infer<typeof repositorySelectSchema>[];
 }
 
 export function ActiveLinksTable({ activeLinks }: ActiveLinksTableProps) {
-  const utils = api.useUtils();
-  // utils.db.invalidate()
   return (
     <>
       <div>

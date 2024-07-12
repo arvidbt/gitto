@@ -6,7 +6,7 @@ import { getTimeSinceUpdated } from "@/utils/time-since-updated";
 import { type ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-import { UserRepositoryRow } from "../rows/user-repository-row";
+import { UserRepositoryRow } from "./user-repository-row";
 
 type UserRepositoryColumnProps = {
   id: number;
