@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import Editor from "@/components/editor";
 import { Nav } from "@/components/nav";
 import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function Repository({
   params,
@@ -24,7 +25,17 @@ export default async function Repository({
           <Nav />
           <main className="flex flex-1 flex-col gap-4 py-8 md:gap-8 ">
             <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-              <Suspense fallback={<p>Loading Editor...</p>}>
+              <Suspense
+                fallback={
+                  <div className="flex flex-col space-y-3">
+                    <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-[250px]" />
+                      <Skeleton className="h-4 w-[200px]" />
+                    </div>
+                  </div>
+                }
+              >
                 <Editor owner={owner} repo={repo} />
               </Suspense>
             </div>

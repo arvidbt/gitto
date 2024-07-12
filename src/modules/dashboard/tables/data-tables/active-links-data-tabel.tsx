@@ -20,7 +20,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { api } from "@/trpc/server";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

@@ -73,29 +73,31 @@ export default async function Editor({ owner, repo }: Props) {
   await db.insert(files).values(updatedTree).onConflictDoNothing();
 
   return (
-    <Card className="border-2 border-github-foreground bg-github-secondary text-github-white">
-      <CardHeader>
-        <CardTitle>Repository Created 🎉</CardTitle>
-        <CardDescription className="text-github-accent">
-          Repository is saved in our database. You can delete it whenever you
-          want.
-        </CardDescription>
-        <Input
-          className="border-2 border-github-foreground bg-github-secondary"
-          defaultValue={`https://gitto.link/${owner}/${repo}`}
-          disabled={true}
-        />
-        <Input
-          className="border-2 border-github-foreground bg-github-secondary"
-          defaultValue={repoId[0]?.id}
-          disabled={true}
-          itemRef=""
-        />
-        <CardContent>
-          <Link href={"/dashboard"}>View</Link>
-          <Link href={"/dashboard"}>Share</Link>
-        </CardContent>
-      </CardHeader>
-    </Card>
+    <div>
+      <Card className="border-2 border-github-foreground bg-github-secondary text-github-white">
+        <CardHeader>
+          <CardTitle>Repository Created 🎉</CardTitle>
+          <CardDescription className="text-github-accent">
+            Repository is saved in our database. You can delete it whenever you
+            want.
+          </CardDescription>
+          <Input
+            className="border-2 border-github-foreground bg-github-secondary"
+            defaultValue={`https://gitto.link/${owner}/${repo}`}
+            disabled={true}
+          />
+          <Input
+            className="border-2 border-github-foreground bg-github-secondary"
+            defaultValue={repoId[0]?.id}
+            disabled={true}
+            itemRef=""
+          />
+          <CardContent>
+            <Link href={"/dashboard"}>View</Link>
+            <Link href={"/dashboard"}>Share</Link>
+          </CardContent>
+        </CardHeader>
+      </Card>
+    </div>
   );
 }

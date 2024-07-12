@@ -38,7 +38,7 @@ export async function Nav() {
     <header className="sticky top-0 flex h-16 items-center gap-4 rounded-lg border border-github-foreground bg-github-secondary px-4 text-github-white md:px-6">
       <nav className="flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
-          href="#"
+          href="/dashboard"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
           <GitBranchPlus className="h-6 w-6" />

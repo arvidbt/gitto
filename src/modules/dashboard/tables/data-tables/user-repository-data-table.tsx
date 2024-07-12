@@ -20,14 +20,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { api } from "@/trpc/server";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function ActiveLinksDataTable<TData, TValue>({
+export function UserRepositoryDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -39,21 +38,16 @@ export function ActiveLinksDataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    initialState: {
-      pagination: {
-        pageSize: 5,
-      },
-    },
     state: {
       sorting,
     },
   });
 
   return (
-    <div className="">
+    <div>
       <div className="rounded-md ">
         <Table>
-          <TableHeader className="hidden">
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -76,7 +70,7 @@ export function ActiveLinksDataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && ""}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="py-2.5">
+                    <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
@@ -91,7 +85,7 @@ export function ActiveLinksDataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No Active Links.
+                  No results.
                 </TableCell>
               </TableRow>
             )}

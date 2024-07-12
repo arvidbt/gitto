@@ -1,9 +1,11 @@
+import { SelectForm } from "@/app/(main)/dashboard/select-form";
+import { RepositoryDataTable } from "@/app/(main)/dashboard/tables/user-repositories/user-repository-data-table";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "@/components/ui/card";
 import {
   Dialog,
@@ -13,15 +15,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import { FolderSymlink } from "lucide-react";
-import { SelectForm } from "../../select-form";
-import { type Session } from "next-auth";
-import { type z } from "zod";
+import { getUserRepositoryColumns } from "../columns/user-repository-columns";
 import { type repositorySelectSchema } from "@/server/db/schema";
 import { type UserRepositories } from "@/server/api/routers/github";
-import { RepositoryDataTable } from "./user-repository-data-table";
-import { getUserRepositoryColumns } from "./user-repository-columns";
+import { type z } from "zod";
 
 interface UserRepositoriesProps {
   activeLinks: z.infer<typeof repositorySelectSchema>[];

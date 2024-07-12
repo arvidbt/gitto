@@ -12,4 +12,12 @@ export const dbRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       await db.delete(repository).where(eq(repository.id, input.id));
     }),
+
+  getActiveLinks: protectedProcedure.mutation(async ({ ctx }) => {
+    const res = await db.query.repository.findMany({
+      where: eq(repository.userId, "45a9305a-ca1e-40eb-a7e9-dfd0213400b9"),
+    });
+
+    return res;
+  }),
 });
