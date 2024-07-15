@@ -11,9 +11,6 @@ import {
 import { Input } from "./ui/input";
 import { auth } from "@/auth";
 import Link from "next/link";
-import { db } from "@/server/db";
-import { files, repository } from "@/server/db/schema";
-import { redirect } from "next/navigation";
 
 type Props = {
   owner: string;
@@ -35,16 +32,7 @@ export default async function Editor({ owner, repo }: Props) {
     repo: repo,
   });
 
-  const [repoId] = await db
-    .insert(repository)
-    .values({
-      repositoryFullName: `${owner}/${repo}`,
-      repositoryName: repo,
-      repositoryOwner: owner,
-      userId: session.user.id,
-    })
-    .returning({ id: repository.id })
-    .onConflictDoNothing();
+  const [repoId] = await trpc.db.insertRepository({ owner: owner, repo: repo });
 
   if (!repoId) {
     return null;
@@ -62,7 +50,7 @@ export default async function Editor({ owner, repo }: Props) {
         name: repo,
         encodedContent:
           (await trpc.github.getEncodedFileContent({
-            path: file.path ?? "",
+            path: file.path!,
             owner: owner,
             repo: repo,
           })) ?? "",

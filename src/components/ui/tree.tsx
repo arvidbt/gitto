@@ -91,7 +91,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
 
     return (
       <div ref={refRoot} className={cn("overflow-hidden", className)}>
-        <ScrollArea style={{ width, height }}>
+        <ScrollArea className="min-h-screen">
           <div className="relative p-2">
             <TreeItem
               data={data}
@@ -160,7 +160,7 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                         )}
                         {!item.icon && FolderIcon && (
                           <FolderIcon
-                            className="mr-2 h-4 w-4 shrink-0 text-accent-foreground/50"
+                            className="mr-2 h-4 w-4 shrink-0 text-github-accent"
                             aria-hidden="true"
                           />
                         )}
@@ -231,7 +231,7 @@ const Leaf = React.forwardRef<
       )}
       {!item.icon && Icon && (
         <Icon
-          className="mr-2 h-4 w-4 shrink-0 text-accent-foreground/50"
+          className="mr-2 h-4 w-4 shrink-0 text-github-accent"
           aria-hidden="true"
         />
       )}
@@ -254,7 +254,7 @@ const AccordionTrigger = React.forwardRef<
       {...props}
     >
       {children}
-      <ChevronRight className="ml-auto h-4 w-4 shrink-0 text-accent-foreground/50 transition-transform duration-200" />
+      <ChevronRight className="ml-auto h-4 w-4 shrink-0 text-github-white transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ));

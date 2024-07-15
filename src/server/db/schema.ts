@@ -113,6 +113,7 @@ export const files = pgTable("files", {
   id: serial("id").primaryKey(),
   sha: text("sha").notNull().unique(),
   name: text("name").notNull(),
+  path: text("path").notNull(),
   type: text("type").notNull(),
   encodedContent: text("encodedContent"),
   repoId: text("repoId")

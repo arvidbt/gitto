@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS "files" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"sha" text NOT NULL,
 	"name" text NOT NULL,
+	"path" text NOT NULL,
 	"type" text NOT NULL,
 	"encodedContent" text,
 	"repoId" text NOT NULL,

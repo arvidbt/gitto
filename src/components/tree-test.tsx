@@ -15,20 +15,20 @@
 //   return (
 //     <div className="min-h-screen gap-12">
 //       <div className="flex min-h-full space-x-2">
-//         <Tree
-//           data={data}
-//           className="h-[460px] w-full flex-shrink-0 border-[1px]"
-//           initialSlelectedItemId="app"
-//           onSelectChange={(item) =>
-//             setContent(
-//               item && item.type === "tree"
-//                 ? null
-//                 : Buffer.from(item?.encodedContent, "base64").toString() ?? "",
-//             )
-//           }
-//           folderIcon={Folder}
-//           itemIcon={Workflow}
-//         />
+// <Tree
+//   data={data}
+//   className="h-[460px] w-full flex-shrink-0 border-[1px]"
+//   initialSlelectedItemId="app"
+//   onSelectChange={(item) =>
+//     setContent(
+//       item && item.type === "tree"
+//         ? null
+//         : Buffer.from(item?.encodedContent, "base64").toString() ?? "",
+//     )
+//   }
+//   folderIcon={Folder}
+//   itemIcon={Workflow}
+// />
 //       </div>
 //       {content && <CodeBlock code={content} language="javascript"></CodeBlock>}
 //     </div>

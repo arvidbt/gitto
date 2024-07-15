@@ -31,10 +31,6 @@ export function ActiveLinksTable({ activeLinks }: ActiveLinksTableProps) {
               <CardTitle className="text-xl">Active Links</CardTitle>
               <CardDescription>Access repositories with keys.</CardDescription>
             </div>
-            <Button className="ml-auto h-9 gap-2 bg-purple-500 hover:bg-purple-500/80">
-              <span className="hidden md:flex">Manage Keys</span>
-              <KeyRound className="h-4 w-4" />
-            </Button>
           </CardHeader>
           <CardContent className="grid">
             <ActiveLinksDataTable

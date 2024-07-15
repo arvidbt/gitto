@@ -1,8 +1,11 @@
 import { auth } from "@/auth";
-import { buildTree } from "@/lib/create-file-tree";
 import { db } from "@/server/db";
 import { files, repository } from "@/server/db/schema";
 import { eq, and } from "drizzle-orm";
+import { buildTree } from "./build";
+import { Tree } from "@/components/ui/tree";
+import { CodeBlock } from "@/components/code-block";
+import { FileExplorer } from "@/modules/repository/file-explorer";
 
 export default async function Page({ params }: { params: { repo: string } }) {
   const session = await auth();
@@ -13,13 +16,16 @@ export default async function Page({ params }: { params: { repo: string } }) {
     ),
   });
 
-  console.log(res);
+  if (!res) {
+    return <div>no</div>;
+  }
 
-  const res2 = await db.query.files.findMany({
-    where: eq(files.repoId, res?.id ?? ""),
-  });
+  const storedFiles = await db
+    .select()
+    .from(files)
+    .where(eq(files.repoId, res.id));
 
-  console.log(res2);
+  const t = buildTree(storedFiles);
 
-  return <div></div>;
+  return <FileExplorer files={t} />;
 }
