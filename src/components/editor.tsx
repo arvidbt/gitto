@@ -35,42 +35,45 @@ export default async function Editor({ owner, repo }: Props) {
     repo: repo,
   });
 
-  const repoId = await db
+  const [repoId] = await db
     .insert(repository)
     .values({
       repositoryFullName: `${owner}/${repo}`,
       repositoryName: repo,
       repositoryOwner: owner,
-      userId: "45a9305a-ca1e-40eb-a7e9-dfd0213400b9",
+      userId: session.user.id,
     })
     .returning({ id: repository.id })
     .onConflictDoNothing();
 
-  if (repoId.length === 0) {
-    redirect(`/${owner}/${repo}`);
+  if (!repoId) {
+    return null;
   }
 
   const updatedTree = await Promise.all(
     repositoryResponse.data.tree.map(async (file) => {
-      const encodedContent = await trpc.github.getEncodedFileContent({
-        path: file.path ?? "",
-        owner: owner,
-        repo: repo,
-      });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { mode, size, url, path, sha, type } = file;
-
       return {
-        name: path ?? "",
-        sha: sha ?? "",
-        type: type ?? "",
-        encodedContent: encodedContent ?? "",
-        repoId: repoId[0]?.id ?? "",
+        path: file.path!,
+        mode: file.mode!,
+        type: file.type!,
+        sha: file.sha!,
+        size: file.size ?? 0,
+        url: file.url!,
+        name: repo,
+        encodedContent:
+          (await trpc.github.getEncodedFileContent({
+            path: file.path ?? "",
+            owner: owner,
+            repo: repo,
+          })) ?? "",
+        repoId: repoId.id,
       };
     }),
   );
 
-  await db.insert(files).values(updatedTree).onConflictDoNothing();
+  console.log(updatedTree);
+
+  await trpc.db.insertContent(updatedTree);
 
   return (
     <div>
@@ -88,7 +91,7 @@ export default async function Editor({ owner, repo }: Props) {
           />
           <Input
             className="border-2 border-github-foreground bg-github-secondary"
-            defaultValue={repoId[0]?.id}
+            defaultValue={repoId.id}
             disabled={true}
             itemRef=""
           />

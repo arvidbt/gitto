@@ -22,8 +22,6 @@ export const githubRouter = createTRPCRouter({
         auth: ctx.session?.accessToken,
       });
 
-      console.log(input);
-
       const repoResponse = await octokitRest.repos.get({
         owner: input.owner,
         repo: input.repo,

@@ -5,12 +5,14 @@ import { type TreeDataItem } from "@/components/ui/tree";
 import { trpc } from "@/trpc/server";
 
 const GithubNodeSchema = z.object({
-  path: z.string().min(1),
-  mode: z.string().min(1),
-  type: z.enum(["blob", "tree"]),
-  sha: z.string(),
-  size: z.number().nonnegative().optional(),
-  url: z.string().url(),
+  name: z.string().optional(),
+  sha: z.string().optional(),
+  type: z.string().optional(),
+  size: z.number().optional(),
+  url: z.string().optional(),
+  path: z.string().optional(),
+  encodedContent: z.string().optional(),
+  repoId: z.string().optional(),
 });
 
 export type GithubNode = z.infer<typeof GithubNodeSchema>;
@@ -31,7 +33,9 @@ export async function buildTree(
     type: "tree",
   };
 
+  console.log(items);
   for (const item of items) {
+    console.log(item);
     const parts = item.path.split("/");
     let currentNode = root;
     let parentId: string | null = null;

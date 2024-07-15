@@ -9,7 +9,7 @@ import { signIn, signOut } from "@/auth";
 
 export const authRouter = createTRPCRouter({
   signIn: publicProcedure.mutation(async () => {
-    await signIn("github", { redirectTo: "/test", redirect: true });
+    await signIn("github", { redirectTo: "/", redirect: true });
   }),
 
   signOut: protectedProcedure.mutation(async () => {

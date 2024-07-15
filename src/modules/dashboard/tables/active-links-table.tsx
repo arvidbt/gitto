@@ -28,7 +28,7 @@ export function ActiveLinksTable({ activeLinks }: ActiveLinksTableProps) {
         >
           <CardHeader className="flex flex-row items-center">
             <div className="grid gap-2">
-              <CardTitle>Active Links</CardTitle>
+              <CardTitle className="text-xl">Active Links</CardTitle>
               <CardDescription>Access repositories with keys.</CardDescription>
             </div>
             <Button className="ml-auto h-9 gap-2 bg-purple-500 hover:bg-purple-500/80">

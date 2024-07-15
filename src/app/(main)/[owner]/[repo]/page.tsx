@@ -1,10 +1,16 @@
+import { auth } from "@/auth";
+import { buildTree } from "@/lib/create-file-tree";
 import { db } from "@/server/db";
 import { files, repository } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
-export default async function Page() {
+export default async function Page({ params }: { params: { repo: string } }) {
+  const session = await auth();
   const res = await db.query.repository.findFirst({
-    where: eq(repository.id, "6ca57d36-6b1e-4dce-afea-47e285090f0b"),
+    where: and(
+      eq(repository.userId, session?.user.id ?? ""),
+      eq(repository.repositoryName, params.repo),
+    ),
   });
 
   console.log(res);
@@ -14,5 +20,6 @@ export default async function Page() {
   });
 
   console.log(res2);
+
   return <div></div>;
 }

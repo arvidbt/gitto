@@ -33,16 +33,29 @@ export const authConfig = {
   ],
   secret: env.JWT_SECRET,
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, account, user }) {
       if (account) {
         token.accessToken = account.access_token;
       }
+
+      if (user) {
+        return { ...token, id: user.id }; // Save id to token as docs says: https://next-auth.js.org/configuration/callbacks
+      }
+
       return token;
     },
     async session({ session, user, token }) {
       if (token?.accessToken) {
         session.accessToken = token.accessToken as string;
       }
+
+      session = {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id as string, // Get id from token instead
+        },
+      };
 
       return session;
     },

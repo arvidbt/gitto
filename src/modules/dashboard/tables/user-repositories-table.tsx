@@ -60,9 +60,9 @@ export function UserRepositoriesTable({
       className="border-2 border-github-foreground bg-github-secondary text-github-white md:col-span-3"
       x-chunk="dashboard-01-chunk-4"
     >
-      <CardHeader className="flex flex-row items-center">
+      <CardHeader className="flex flex-row items-center gap-10">
         <div className="grid gap-2">
-          <CardTitle>Github Repositories</CardTitle>
+          <CardTitle className="text-xl">Github Repositories</CardTitle>
           <CardDescription>
             {" "}
             All your repositories, public and private.

@@ -3,8 +3,19 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 import { db } from "@/server/db";
-import { repository } from "@/server/db/schema";
+import { files, repository } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
+
+const ContentTreeItemSchema = z.object({
+  name: z.string(),
+  sha: z.string(),
+  type: z.string(),
+  size: z.number(),
+  url: z.string(),
+  path: z.string(),
+  encodedContent: z.string().nullable(),
+  repoId: z.string(),
+});
 
 export const dbRouter = createTRPCRouter({
   deleteLink: protectedProcedure
@@ -14,10 +25,38 @@ export const dbRouter = createTRPCRouter({
     }),
 
   getActiveLinks: protectedProcedure.mutation(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
     const res = await db.query.repository.findMany({
-      where: eq(repository.userId, "45a9305a-ca1e-40eb-a7e9-dfd0213400b9"),
+      where: eq(repository.userId, userId),
     });
 
     return res;
   }),
+
+  insertRepository: protectedProcedure
+    .input(
+      z.object({
+        owner: z.string(),
+        repo: z.string(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const userId = ctx.session.user.id;
+      return await db
+        .insert(repository)
+        .values({
+          repositoryFullName: `${input.owner}/${input.repo}`,
+          repositoryName: input.repo,
+          repositoryOwner: input.owner,
+          userId: userId,
+        })
+        .returning({ id: repository.id })
+        .onConflictDoNothing();
+    }),
+
+  insertContent: protectedProcedure
+    .input(z.array(ContentTreeItemSchema))
+    .query(async ({ ctx, input }) => {
+      await db.insert(files).values(input).onConflictDoNothing();
+    }),
 });
