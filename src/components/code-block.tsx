@@ -4,17 +4,19 @@ import React, { useEffect, useRef } from "react";
 import hljs from "highlight.js";
 import "highlight.js/styles/github-dark.css";
 
-export const CodeBlock = ({
-  language,
-  code,
-}: {
+interface CodeBlockProps {
   language: string;
   code: string;
-}) => {
-  const codeRef = useRef(null);
+}
+
+export const CodeBlock: React.FC<CodeBlockProps> = ({ language, code }) => {
+  const codeRef = useRef<HTMLElement>(null);
+
+  console.log(codeRef);
+
   useEffect(() => {
-    if (codeRef?.current) {
-      hljs.highlightBlock(codeRef.current);
+    if (codeRef.current) {
+      hljs.highlightElement(codeRef.current);
     }
   }, [code]);
 

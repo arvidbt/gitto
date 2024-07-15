@@ -1,3 +1,5 @@
+import { type TreeDataItem } from "@/components/ui/tree";
+
 interface StoredFile {
   id: number;
   name: string;
@@ -6,14 +8,6 @@ interface StoredFile {
   encodedContent: string | null;
   sha: string;
   repoId: string;
-}
-
-interface TreeDataItem {
-  id: string;
-  name: string;
-  type: string;
-  children?: TreeDataItem[];
-  encodedContent?: string;
 }
 
 export function buildTree(data: StoredFile[]): TreeDataItem[] {
@@ -37,6 +31,7 @@ export function buildTree(data: StoredFile[]): TreeDataItem[] {
     return map[path].map((item) => ({
       id: item.id.toString(),
       name: item.name,
+      path: item.path,
       type: item.type,
       encodedContent: item.encodedContent ?? undefined,
       children: map[item.path] ? buildNode(item.path) : undefined,

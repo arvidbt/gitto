@@ -15,6 +15,7 @@ interface TreeDataItem {
   name: string;
   icon?: LucideIcon;
   type: string;
+  path: string;
   children?: TreeDataItem[];
   encodedContent?: string;
 }
@@ -91,7 +92,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
 
     return (
       <div ref={refRoot} className={cn("overflow-hidden", className)}>
-        <ScrollArea className="min-h-screen">
+        <ScrollArea style={{ width, height }}>
           <div className="relative p-2">
             <TreeItem
               data={data}
