@@ -3,8 +3,6 @@ import { db } from "@/server/db";
 import { files, repository } from "@/server/db/schema";
 import { eq, and } from "drizzle-orm";
 import { buildTree } from "./build";
-import { Tree } from "@/components/ui/tree";
-import { CodeBlock } from "@/components/code-block";
 import { FileExplorer } from "@/modules/repository/file-explorer";
 
 export default async function Page({ params }: { params: { repo: string } }) {
@@ -27,5 +25,5 @@ export default async function Page({ params }: { params: { repo: string } }) {
 
   const t = buildTree(storedFiles);
 
-  return <FileExplorer files={t} />;
+  return <FileExplorer files={t} repo={params.repo} />;
 }

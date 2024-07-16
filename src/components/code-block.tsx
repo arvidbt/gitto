@@ -12,19 +12,25 @@ interface CodeBlockProps {
 export const CodeBlock: React.FC<CodeBlockProps> = ({ language, code }) => {
   const codeRef = useRef<HTMLElement>(null);
 
-  console.log(codeRef);
+  const highlightCode = () => {
+    if (codeRef.current) {
+      codeRef.current.removeAttribute("data-highlighted");
+      hljs.highlightElement(codeRef.current);
+      codeRef.current.setAttribute("data-highlighted", "yes");
+    }
+  };
 
   useEffect(() => {
-    if (codeRef.current) {
-      hljs.highlightElement(codeRef.current);
-    }
+    highlightCode();
   }, [code]);
 
   return (
-    <pre>
-      <code className={`language-${language}`} ref={codeRef}>
-        {code}
-      </code>
-    </pre>
+    <div>
+      <pre>
+        <code ref={codeRef} className={`language-${language}`}>
+          {code}
+        </code>
+      </pre>
+    </div>
   );
 };

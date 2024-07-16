@@ -13,7 +13,6 @@ interface StoredFile {
 export function buildTree(data: StoredFile[]): TreeDataItem[] {
   const map: Record<string, StoredFile[]> = {};
 
-  // Group items by their parent directory
   data.forEach((item) => {
     const parts = item.path.split("/");
     const name = parts.pop()!;
@@ -26,9 +25,8 @@ export function buildTree(data: StoredFile[]): TreeDataItem[] {
     map[parent].push({ ...item, name });
   });
 
-  // Recursively build the tree structure
   function buildNode(path: string): TreeDataItem[] {
-    return map[path].map((item) => ({
+    const mappedItem = map[path].map((item) => ({
       id: item.id.toString(),
       name: item.name,
       path: item.path,
@@ -36,6 +34,8 @@ export function buildTree(data: StoredFile[]): TreeDataItem[] {
       encodedContent: item.encodedContent ?? undefined,
       children: map[item.path] ? buildNode(item.path) : undefined,
     }));
+
+    return mappedItem;
   }
 
   return buildNode("/");
