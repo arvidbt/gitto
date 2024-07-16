@@ -3,7 +3,7 @@ import { db } from "@/server/db";
 import { files, repository } from "@/server/db/schema";
 import { eq, and } from "drizzle-orm";
 import { buildTree } from "./build";
-import { FileExplorer } from "@/modules/repository/file-explorer";
+import { Repository } from "@/modules/repository/repository";
 
 export default async function Page({ params }: { params: { repo: string } }) {
   const session = await auth();
@@ -23,7 +23,5 @@ export default async function Page({ params }: { params: { repo: string } }) {
     .from(files)
     .where(eq(files.repoId, res.id));
 
-  const t = buildTree(storedFiles);
-
-  return <FileExplorer files={t} repo={params.repo} />;
+  return <Repository files={buildTree(storedFiles)} repo={params.repo} />;
 }
