@@ -55,6 +55,10 @@ export function Repository({ files, repo }: Props) {
                   />
                 </div>
                 {content && <Code content={content} path={path} />}
+                <div className="max-h-[83vh] min-h-[83vh] border-2 border-github-foreground bg-github-primary">
+                  <div className="m-2 mr-10 rounded-lg border-github-foreground bg-github-sky p-4"></div>
+                  <div className="m-2 ml-10 rounded-lg border-github-foreground bg-github-sky p-4"></div>
+                </div>
               </div>
             </main>
           </div>

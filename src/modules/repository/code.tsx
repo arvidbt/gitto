@@ -32,7 +32,7 @@ export function Code({ content, path }: { content: string; path: string }) {
   }, [content]);
 
   return (
-    <div className="max-h-[83vh] min-h-[83vh] w-full overflow-scroll border-2 border-github-foreground bg-github-primary md:col-span-3">
+    <div className="max-h-[83vh] min-h-[83vh] w-full overflow-scroll border-2 border-github-foreground bg-github-primary md:col-span-2">
       {content && (
         <div ref={refRoot} className={cn("max-h-[83vh] min-h-[83vh]")}>
           <pre>
