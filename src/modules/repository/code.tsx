@@ -10,8 +10,11 @@ export function Code({ content, path }: { content: string; path: string }) {
   const { ref: refRoot } = useResizeObserver();
 
   function getFileExtension(): string {
+    if (path.startsWith(".")) {
+      return "txt";
+    }
     const parts = path.split(".");
-    return parts.length > 1 ? parts.pop()! : "";
+    return parts.length > 1 ? parts.pop()! : "txt";
   }
 
   const codeRef = useRef<HTMLElement>(null);

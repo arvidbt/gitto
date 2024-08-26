@@ -53,7 +53,8 @@ export const authConfig = {
         ...session,
         user: {
           ...session.user,
-          id: token.id as string, // Get id from token instead
+          id: token.id as string,
+          size: token.size as number,
         },
       };
 

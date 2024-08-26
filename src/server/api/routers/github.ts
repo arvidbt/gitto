@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { z } from "zod";
+import { string, z } from "zod";
 import { Octokit } from "octokit";
 import { Octokit as Rest } from "@octokit/rest";
 
@@ -10,6 +10,8 @@ export type Repository =
   Endpoints["GET /repos/{owner}/{repo}/git/trees/{tree_sha}"]["response"];
 
 export type UserRepositories = Endpoints["GET /user/repos"]["response"];
+export type RepositoryContent =
+  Endpoints["GET /repos/{owner}/{repo}/contents/{path}"]["response"];
 
 export const githubRouter = createTRPCRouter({
   getRepository: protectedProcedure
@@ -72,6 +74,22 @@ export const githubRouter = createTRPCRouter({
       if ("content" in encodedContent.data) {
         return encodedContent.data.content;
       }
+    }),
+
+  getContent: protectedProcedure
+    .input(z.object({ owner: z.string(), repo: z.string(), path: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const octokitRest = new Rest({
+        auth: ctx.session?.accessToken,
+      });
+
+      const content = await octokitRest.repos.getContent({
+        owner: input.owner,
+        repo: input.repo,
+        path: input.path,
+      });
+
+      return content.data;
     }),
 
   getUserRepositories: protectedProcedure

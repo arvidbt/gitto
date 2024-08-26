@@ -6,6 +6,7 @@ import {
   primaryKey,
   integer,
   serial,
+  json,
 } from "drizzle-orm/pg-core";
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
@@ -25,6 +26,7 @@ export const users = pgTable("user", {
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
+  quota: integer("quota").default(1048576),
 });
 
 export const accounts = pgTable(
@@ -102,6 +104,7 @@ export const repository = pgTable("repository", {
   repositoryFullName: text("repositoryFullName").notNull().unique(),
   repositoryOwner: text("repositoryOwner").notNull(),
   created: timestamp("created").defaultNow(),
+  size: integer("size").default(0),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
@@ -115,7 +118,7 @@ export const files = pgTable("files", {
   name: text("name").notNull(),
   path: text("path").notNull(),
   type: text("type").notNull(),
-  encodedContent: text("encodedContent"),
+  content: text("content"),
   repoId: text("repoId")
     .notNull()
     .references(() => repository.id, { onDelete: "cascade" }),

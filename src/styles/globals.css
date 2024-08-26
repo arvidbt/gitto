@@ -86,3 +86,11 @@
       @apply bg-background text-foreground;
     }
   }
+
+
+  .boxes {
+    background-color: #161b22;
+    opacity: 1;
+    background-image:  linear-gradient(#21262d 0.4px, transparent 0.4px), linear-gradient(to right, #21262d 0.4px, #0d1117 0.4px);
+    background-size: 256px 256px;
+  }

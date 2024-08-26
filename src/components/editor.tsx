@@ -11,6 +11,7 @@ import {
 import { Input } from "./ui/input";
 import { auth } from "@/auth";
 import Link from "next/link";
+import { RepositoryFile } from "@/server/api/routers/db";
 
 type Props = {
   owner: string;
@@ -32,36 +33,40 @@ export default async function Editor({ owner, repo }: Props) {
     repo: repo,
   });
 
-  const [repoId] = await trpc.db.insertRepository({ owner: owner, repo: repo });
+  const repoSize = repositoryResponse.data.tree.reduce(
+    (sum, file) => sum + (file.size ?? 0),
+    0,
+  );
+
+  const [repoId] = await trpc.db.insertRepository({
+    owner: owner,
+    repo: repo,
+    size: repoSize,
+  });
 
   if (!repoId) {
     return null;
   }
 
-  const updatedTree = await Promise.all(
+  const repoContent = await Promise.all(
     repositoryResponse.data.tree.map(async (file) => {
       return {
+        repoId: repoId.id,
         path: file.path!,
-        mode: file.mode!,
         type: file.type!,
         sha: file.sha!,
         size: file.size ?? 0,
-        url: file.url!,
         name: repo,
-        encodedContent:
-          (await trpc.github.getEncodedFileContent({
-            path: file.path!,
-            owner: owner,
-            repo: repo,
-          })) ?? "",
-        repoId: repoId.id,
+        content: await trpc.github.getEncodedFileContent({
+          owner: owner,
+          repo: repo,
+          path: file.path!,
+        }),
       };
     }),
   );
 
-  console.log(updatedTree);
-
-  await trpc.db.insertContent(updatedTree);
+  await trpc.db.insertContent(repoContent);
 
   return (
     <div>

@@ -4,16 +4,17 @@ import { db } from "@/server/db";
 import { files, repository } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
-const ContentTreeItemSchema = z.object({
-  name: z.string(),
-  sha: z.string(),
+const RepositoryFileSchema = z.object({
+  repoId: z.string(),
   type: z.string(),
   size: z.number(),
-  url: z.string(),
+  name: z.string(),
   path: z.string(),
-  encodedContent: z.string().nullable(),
-  repoId: z.string(),
+  content: z.string().optional(),
+  sha: z.string(),
 });
+
+export type RepositoryFile = z.infer<typeof RepositoryFileSchema>;
 
 export const dbRouter = createTRPCRouter({
   deleteLink: protectedProcedure
@@ -36,6 +37,7 @@ export const dbRouter = createTRPCRouter({
       z.object({
         owner: z.string(),
         repo: z.string(),
+        size: z.number().nonnegative(),
       }),
     )
     .query(async ({ input, ctx }) => {
@@ -47,13 +49,14 @@ export const dbRouter = createTRPCRouter({
           repositoryName: input.repo,
           repositoryOwner: input.owner,
           userId: userId,
+          size: input.size,
         })
         .returning({ id: repository.id })
         .onConflictDoNothing();
     }),
 
   insertContent: protectedProcedure
-    .input(z.array(ContentTreeItemSchema))
+    .input(z.array(RepositoryFileSchema))
     .query(async ({ ctx, input }) => {
       await db.insert(files).values(input).onConflictDoNothing();
     }),

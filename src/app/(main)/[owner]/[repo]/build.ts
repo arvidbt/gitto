@@ -5,7 +5,7 @@ interface StoredFile {
   name: string;
   path: string;
   type: string;
-  encodedContent: string | null;
+  content: string | null;
   sha: string;
   repoId: string;
 }
@@ -31,7 +31,7 @@ export function buildTree(data: StoredFile[]): TreeDataItem[] {
       name: item.name,
       path: item.path,
       type: item.type,
-      encodedContent: item.encodedContent ?? undefined,
+      encodedContent: item.content ?? undefined,
       children: map[item.path] ? buildNode(item.path) : undefined,
     }));
 

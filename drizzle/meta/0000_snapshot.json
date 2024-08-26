@@ -1,5 +1,5 @@
 {
-  "id": "b217b272-a7cd-40c4-91d6-2aafd565ae0b",
+  "id": "661a521b-88d1-47a3-bc3d-9263780309c1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "6",
   "dialect": "postgresql",
@@ -224,8 +224,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "encodedContent": {
-          "name": "encodedContent",
+        "content": {
+          "name": "content",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -298,6 +298,13 @@
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
+        },
+        "size": {
+          "name": "size",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
         },
         "userId": {
           "name": "userId",
@@ -408,6 +415,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "quota": {
+          "name": "quota",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 1048576
         }
       },
       "indexes": {},

@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS "files" (
 	"name" text NOT NULL,
 	"path" text NOT NULL,
 	"type" text NOT NULL,
-	"encodedContent" text,
+	"content" text,
 	"repoId" text NOT NULL,
 	CONSTRAINT "files_sha_unique" UNIQUE("sha")
 );
@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS "repository" (
 	"repositoryFullName" text NOT NULL,
 	"repositoryOwner" text NOT NULL,
 	"created" timestamp DEFAULT now(),
+	"size" integer DEFAULT 0,
 	"userId" text NOT NULL,
 	CONSTRAINT "repository_repositoryFullName_unique" UNIQUE("repositoryFullName")
 );
@@ -58,7 +59,8 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"name" text,
 	"email" text NOT NULL,
 	"emailVerified" timestamp,
-	"image" text
+	"image" text,
+	"quota" integer DEFAULT 1048576
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "verificationToken" (

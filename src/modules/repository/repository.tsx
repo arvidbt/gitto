@@ -28,7 +28,7 @@ export function Repository({ files, repo }: Props) {
 
   return (
     <Suspense fallback={<p>Loading</p>}>
-      <div className="flex min-h-screen min-w-full flex-col items-center justify-center bg-github-primary">
+      <div className="boxes flex min-h-screen min-w-full flex-col items-center justify-center bg-github-primary">
         <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4 px-10">
           <div className="flex min-h-screen w-full flex-col">
             <main className="flex flex-col gap-4 py-8 md:gap-8">

@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body
         className={cn(
-          "min-h-screen bg-github-primary font-sans text-github-white antialiased",
+          "boxes min-h-screen font-sans text-github-white antialiased",
           fontSans.variable,
           fontBricolage.variable,
         )}

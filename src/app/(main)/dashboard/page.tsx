@@ -1,34 +1,46 @@
 import { trpc } from "@/trpc/server";
 import { auth } from "@/auth";
-import { Nav } from "@/components/nav";
 import { UserRepositoriesTable, ActiveLinksTable } from "@/modules/dashboard";
 import { Suspense } from "react";
+import { Nav } from "@/modules/dashboard/nav/nav";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { SelectForm } from "@/modules/dashboard/tables/create-link-select-form";
+import { FolderSymlink } from "lucide-react";
 
 export default async function Dashboard() {
   const session = await auth();
-  const repos = await trpc.github.getUserRepositories({ username: "arvidbt" });
-  const activeLinks = await trpc.db.getActiveLinks();
-
   if (!session) {
     return null;
   }
 
+  const repos = await trpc.github.getUserRepositories({ username: "arvidbt" });
+  const activeLinks = await trpc.db.getActiveLinks();
+
+  const totalUsage = activeLinks.reduce(
+    (sum, link) => sum + (link.size ?? 0),
+    0,
+  );
+
   return (
     <Suspense fallback={<p>Loading</p>}>
-      <div className="flex w-full flex-col items-center justify-center bg-github-primary">
+      <div className="boxes flex w-full flex-col items-center justify-center bg-github-primary">
         <div className="flex flex-col items-center justify-center gap-4 py-16">
           <div className="flex min-h-screen w-full flex-col">
-            <Nav />
+            <Nav quotaUsage={parseInt((totalUsage / 1000).toFixed(0))} />
             <main className="flex flex-1 flex-col gap-4 py-8 md:gap-8 ">
-              <div className="grid gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-4">
-                <div className="md:col-span-2">
-                  <UserRepositoriesTable
-                    userRepos={repos}
+              <div className="w-full gap-4 md:gap-8 ">
+                <div className="min-w-[340px] md:min-w-[720px] lg:min-w-[980px] xl:min-w-[1280px]">
+                  <ActiveLinksTable
                     activeLinks={activeLinks}
+                    userRepos={repos}
                   />
-                </div>
-                <div className="md:col-span-2">
-                  <ActiveLinksTable activeLinks={activeLinks} />
                 </div>
               </div>
             </main>
