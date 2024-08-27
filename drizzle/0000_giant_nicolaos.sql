@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS "repository" (
 	"repositoryOwner" text NOT NULL,
 	"created" timestamp DEFAULT now(),
 	"size" integer DEFAULT 0,
+	"languages" json,
 	"userId" text NOT NULL,
 	CONSTRAINT "repository_repositoryFullName_unique" UNIQUE("repositoryFullName")
 );

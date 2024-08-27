@@ -1,5 +1,5 @@
 {
-  "id": "661a521b-88d1-47a3-bc3d-9263780309c1",
+  "id": "71255864-ee13-4e82-873d-69c194457b81",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "6",
   "dialect": "postgresql",
@@ -305,6 +305,12 @@
           "primaryKey": false,
           "notNull": false,
           "default": 0
+        },
+        "languages": {
+          "name": "languages",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
         },
         "userId": {
           "name": "userId",

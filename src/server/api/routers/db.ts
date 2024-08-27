@@ -15,6 +15,7 @@ const RepositoryFileSchema = z.object({
 });
 
 export type RepositoryFile = z.infer<typeof RepositoryFileSchema>;
+export type RepositoryLanguage = Record<string, number>;
 
 export const dbRouter = createTRPCRouter({
   deleteLink: protectedProcedure
@@ -29,7 +30,10 @@ export const dbRouter = createTRPCRouter({
       where: eq(repository.userId, userId),
     });
 
-    return res;
+    return res.map((item) => ({
+      ...item,
+      languages: item.languages as RepositoryLanguage,
+    }));
   }),
 
   insertRepository: protectedProcedure
@@ -38,6 +42,7 @@ export const dbRouter = createTRPCRouter({
         owner: z.string(),
         repo: z.string(),
         size: z.number().nonnegative(),
+        languages: z.record(z.number()),
       }),
     )
     .query(async ({ input, ctx }) => {
@@ -48,6 +53,7 @@ export const dbRouter = createTRPCRouter({
           repositoryFullName: `${input.owner}/${input.repo}`,
           repositoryName: input.repo,
           repositoryOwner: input.owner,
+          languages: input.languages,
           userId: userId,
           size: input.size,
         })

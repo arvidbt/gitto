@@ -6,14 +6,21 @@ import { Suspense, useState } from "react";
 import Link from "next/link";
 import { Code } from "./code";
 import { RepositoryBreadcrumbs } from "./repository-breadcrumbs";
-
+import { RepositoryDetails } from "./repository-details";
+import { type RepositoryLanguage } from "@/server/api/routers/db";
 interface Props {
   files: TreeDataItem[];
   repo: string;
+  languages: RepositoryLanguage;
+  user: {
+    name: string;
+    username: string | undefined;
+    image: string | undefined;
+  };
 }
 
-export function Repository({ files, repo }: Props) {
-  const [content, setContent] = useState<string | null>();
+export function Repository({ files, repo, languages, user }: Props) {
+  const [content, setContent] = useState<string>("");
   const [path, setPath] = useState("");
   const [breadcrumbs, setBreadcrumbs] = useState<string[]>([]);
 
@@ -54,11 +61,8 @@ export function Repository({ files, repo }: Props) {
                     itemIcon={File}
                   />
                 </div>
-                {content && <Code content={content} path={path} />}
-                <div className="max-h-[83vh] min-h-[83vh] border-2 border-github-foreground bg-github-primary">
-                  <div className="m-2 mr-10 rounded-lg border-github-foreground bg-github-sky p-4"></div>
-                  <div className="m-2 ml-10 rounded-lg border-github-foreground bg-github-sky p-4"></div>
-                </div>
+                <Code content={content} path={path} />
+                <RepositoryDetails languages={languages} user={user} />
               </div>
             </main>
           </div>

@@ -33,6 +33,11 @@ export default async function Editor({ owner, repo }: Props) {
     repo: repo,
   });
 
+  const repositoryLanguages = await trpc.github.getRepoLanguages({
+    owner: owner,
+    repo: repo,
+  });
+
   const repoSize = repositoryResponse.data.tree.reduce(
     (sum, file) => sum + (file.size ?? 0),
     0,
@@ -42,6 +47,7 @@ export default async function Editor({ owner, repo }: Props) {
     owner: owner,
     repo: repo,
     size: repoSize,
+    languages: repositoryLanguages.data,
   });
 
   if (!repoId) {

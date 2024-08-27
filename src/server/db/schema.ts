@@ -105,6 +105,7 @@ export const repository = pgTable("repository", {
   repositoryOwner: text("repositoryOwner").notNull(),
   created: timestamp("created").defaultNow(),
   size: integer("size").default(0),
+  languages: json("languages"),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),

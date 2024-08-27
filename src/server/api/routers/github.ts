@@ -12,6 +12,8 @@ export type Repository =
 export type UserRepositories = Endpoints["GET /user/repos"]["response"];
 export type RepositoryContent =
   Endpoints["GET /repos/{owner}/{repo}/contents/{path}"]["response"];
+export type RepositoryLanguages =
+  Endpoints["GET /repos/{owner}/{repo}/languages"]["response"];
 
 export const githubRouter = createTRPCRouter({
   getRepository: protectedProcedure
@@ -122,4 +124,24 @@ export const githubRouter = createTRPCRouter({
 
     return rateLimit;
   }),
+
+  getRepoLanguages: protectedProcedure
+    .input(z.object({ owner: z.string().min(1), repo: z.string().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      const octokit = new Octokit({
+        auth: ctx.session?.accessToken,
+      });
+
+      const languages = await octokit.request(
+        "GET /repos/{owner}/{repo}/languages",
+        {
+          owner: input.owner,
+          repo: input.repo,
+          headers: {
+            "X-GitHub-Api-Version": "2022-11-28",
+          },
+        },
+      );
+      return languages;
+    }),
 });
