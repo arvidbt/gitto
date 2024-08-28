@@ -9,12 +9,9 @@ import "highlight.js/styles/github-dark.css";
 export function Code({ content, path }: { content: string; path: string }) {
   const { ref: refRoot } = useResizeObserver();
 
-  function getFileExtension(): string {
-    if (path.startsWith(".")) {
-      return "txt";
-    }
+  function getFileExtension(): string | null {
     const parts = path.split(".");
-    return parts.length > 1 ? parts.pop()! : "txt";
+    return parts.length > 1 ? parts.pop()! : null;
   }
 
   const codeRef = useRef<HTMLElement>(null);

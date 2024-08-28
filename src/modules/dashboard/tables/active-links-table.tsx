@@ -19,7 +19,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FolderSymlink } from "lucide-react";
+
+import { FolderSymlink, MessageSquareWarning } from "lucide-react";
 import { SelectForm } from "./create-link-select-form";
 import { type UserRepositories } from "@/server/api/routers/github";
 
@@ -41,8 +42,11 @@ export function ActiveLinksTable({
         >
           <CardHeader className="flex flex-row items-center gap-10">
             <div className="grid gap-2">
-              <CardTitle className="text-xl">Active Links</CardTitle>
-              <CardDescription>Access repositories with keys.</CardDescription>
+              <CardTitle className="text-xl">Active Repositories</CardTitle>
+              <CardDescription className="flex flex-row items-center gap-2">
+                <MessageSquareWarning className="text-github-destructive" />
+                Active repositories are acccessible to anyone with a link.
+              </CardDescription>
             </div>
             <Dialog>
               <DialogTrigger className="ml-auto h-9 gap-1 rounded-md bg-github-green px-3 text-github-white hover:bg-github-green/80">

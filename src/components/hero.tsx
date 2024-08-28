@@ -4,14 +4,13 @@ export function Hero() {
   return (
     <div className="flex max-w-7xl flex-col items-center justify-center ">
       <div className=" flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <div>
-          <h1 className="font-bricolage text-4xl font-black">
-            Share private repositories with a{" "}
-            <span className="text-github-green">link</span>,{" "}
-            <span className="text-github-muted">not by invite.</span>
+        <div className="">
+          <h1 className="text-4xl font-black">
+            Sharing private code,{" "}
+            <span className="text-github-sky">reimagined.</span>
           </h1>
-          <h2 className="text-xl font-semibold text-github-muted">
-            The easiest way of sharing private Github repositories.
+          <h2 className="font-semibold text-github-muted">
+            Share your private Github repositories with a link, not an invite.
           </h2>
         </div>
       </div>
@@ -69,7 +68,7 @@ export function Hero() {
         <div className="flex w-full flex-col items-center justify-center gap-2 md:w-48">
           <span className="text-4xl">🥳</span>
           <p className="font-bold">
-            {"Use Gitto to share a password-protected mirrored repository."}
+            {"Use Gitto to share a mirrored read-only repository."}
           </p>
         </div>
       </div>

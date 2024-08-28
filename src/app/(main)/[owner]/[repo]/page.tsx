@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "@/server/db";
 import { files, repository } from "@/server/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, or } from "drizzle-orm";
 import { buildTree } from "./build";
 import { Repository } from "@/modules/repository/repository";
 import { type RepositoryLanguage } from "@/server/api/routers/db";
@@ -13,7 +13,7 @@ export default async function Page({
 }) {
   const session = await auth();
   const res = await db.query.repository.findFirst({
-    where: and(
+    where: or(
       eq(repository.userId, session?.user.id ?? ""),
       eq(repository.repositoryName, params.repo),
     ),
@@ -22,8 +22,6 @@ export default async function Page({
   if (!res) {
     return <div>no</div>;
   }
-
-  console.log(params);
 
   const storedFiles = await db
     .select()

@@ -1,16 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Link as LinkIcon } from "lucide-react";
 import Link from "next/link";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -38,7 +31,7 @@ export function RepositoryDetails({ languages, user }: RepositoryDetailsProps) {
   });
 
   return (
-    <div className="col-span-1 flex flex-1 flex-col gap-6 bg-github-primary">
+    <div className="col-span-1 flex max-h-[83vh] min-h-[83vh] flex-1 flex-col gap-6 ">
       <Card className="flex flex-col border-2 border-github-foreground bg-github-secondary">
         <CardHeader>
           <CardTitle className="flex flex-row items-center gap-4 text-github-white">
@@ -49,25 +42,13 @@ export function RepositoryDetails({ languages, user }: RepositoryDetailsProps) {
             <div className="flex flex-1 flex-col">
               <Link
                 href={`https://github.com/${user.username}`}
-                className="text-github-sky"
+                className="text-github-sky hover:underline"
               >
                 {user.username}
               </Link>
               <h3 className="text-base text-github-accent">{user.name}</h3>
             </div>
           </CardTitle>
-        </CardHeader>
-      </Card>
-      <Card className="flex flex-col border-2 border-github-foreground bg-github-primary">
-        <CardHeader>
-          <CardTitle className="text-github-white">About</CardTitle>
-          <CardDescription>
-            Description
-            <LinkIcon className="h-4 w-4" />
-            <Link href={"google.com"} className="font-semibold text-github-sky">
-              https://google.com
-            </Link>
-          </CardDescription>
         </CardHeader>
       </Card>
 
@@ -77,7 +58,7 @@ export function RepositoryDetails({ languages, user }: RepositoryDetailsProps) {
         </CardHeader>
         <CardContent className="flex-1 pb-2">
           <Progress segments={normalizedList} />
-          <div className="grid grid-cols-2 gap-2 py-4">
+          <div className="grid grid-cols-1 gap-2 py-4">
             {normalizedList.map((language, i) => (
               <div key={i} className="flex items-center gap-2">
                 <div

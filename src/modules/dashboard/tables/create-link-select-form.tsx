@@ -72,11 +72,11 @@ export function SelectForm({ data }: Props) {
             <FormItem>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="border-github-foreground bg-github-secondary text-github-white ">
+                  <SelectTrigger className="border-github-foreground bg-github-secondary text-github-white">
                     <SelectValue placeholder="" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="border-github-foreground bg-github-secondary text-github-white ">
+                <SelectContent className="border-github-foreground bg-github-secondary text-github-white">
                   {data.map((repo) => (
                     <SelectItem value={repo.full_name} key={repo.id}>
                       {repo.full_name}

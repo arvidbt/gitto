@@ -30,11 +30,10 @@ export async function Nav({ quotaUsage }: { quotaUsage: number }) {
         <nav className="flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-2">
           <Link
             href="/dashboard"
-            className="flex items-center justify-center gap-2 text-lg font-semibold md:text-base"
+            className="flex  justify-center gap-2 text-lg font-semibold md:text-base"
           >
             <h1 className="text-xl font-black">Gitto</h1>
           </Link>
-          <p className="text-xs font-semibold text-github-accent">v.0.0.0</p>
         </nav>
 
         <div className="flex w-full items-end justify-end gap-4 md:gap-2 lg:gap-4">
